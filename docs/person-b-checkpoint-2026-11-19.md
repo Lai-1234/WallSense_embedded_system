@@ -8,13 +8,14 @@ or detection as reliable. All experiments below are pending.
 ## Verified progress
 
 - Both XIAO ESP32-C6 boards were built and flashed using ESP-IDF 5.5.6.
-  TX uses COM6 and RX uses COM7. RX continuously outputs `CSI_DATA`.
+  TX used COM6 and RX used COM7. RX continuously printed `CSI_DATA` records.
+  These observations describe the pause point; the boards may now be disconnected.
 - TX was configured to select the onboard ceramic antenna: GPIO3 LOW enables
   the RF switch, followed by a 100 ms delay, and GPIO14 LOW selects the onboard
   antenna before NVS and Wi-Fi initialization.
 - RX RSSI readings were approximately -87 dBm before the adjustment and -64 dBm
-  afterward. The boards were also repositioned, so the antenna's contribution
-  was not measured independently.
+  afterward. Board placement also changed, so the improvement cannot be
+  attributed to the antenna change alone.
 - Running `csi_data_read_parse.py -p COM7` from
   `esp-csi/examples/get-started/tools` printed `open success`.
   The live phase and I/Q plots updated.
@@ -30,7 +31,7 @@ csi_data_len is not equal 256 216
 data is incomplete
 ```
 
-In the second message, one record declared 256 values and the parser found 216.
+In the second message, one record declared 256 values and the parser recovered 216.
 The proportion of malformed records, where the data became malformed, and the
 root cause are still unknown. PyQt plotting load is one hypothesis to test.
 Reliable CSV capture, activity scoring, and through-wall detection remain
@@ -40,16 +41,16 @@ unverified.
 
 These experiments are pending; do not interpret them as completed results.
 
-1. Before restarting the parser, preserve the existing `csi_data_log.txt` and
+1. **Pending:** Before restarting the parser, preserve the existing `csi_data_log.txt` and
    `csi_data.csv`, if present. Inspect the raw line immediately after each error
-   marker for truncation, two `CSI_DATA` records joined on one line, or diagnostic
-   text embedded in the array.
-2. Keep board positions and TX frequency fixed. Capture 30 seconds using the
-   original `self.timer.start(100)` setting. Then change only the plot refresh
-   interval to `self.timer.start(500)` and capture another 30 seconds. Use separate
-   CSV and log filenames for each run. Compare valid-record counts and
-   malformed-record counts.
-3. If malformed records remain frequent, check the local TX value of
+   marker for truncation, two `CSI_DATA` records joined on one line, or interleaved
+   firmware logs, including diagnostic text embedded in the array.
+2. **Pending:** Keep board placement and TX frequency fixed. Capture 30 seconds
+   at the original 100 ms plot refresh interval, `self.timer.start(100)`.
+   Then change only `self.timer.start(100)` to `self.timer.start(500)` and capture
+   another 30 seconds. Use separate CSV and log filenames for each run.
+   Compare valid and rejected record counts.
+3. **Pending:** If malformed records remain frequent, check the local TX setting
    `CONFIG_SEND_FREQUENCY`. If it is 100 Hz, test 20 Hz as a separate experiment.
    Record any required firmware changes and flashing during the next session.
 
