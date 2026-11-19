@@ -1,0 +1,128 @@
+{
+  "archive": "datasets/walking_trial_001/walking_20261119_233028_983555.zip",
+  "bytes": 5056755,
+  "sha256": "81da319cd83f482b55694b64212afa22ccf902493aaba0be9371aa1ba9d89b6e",
+  "file_count": 24,
+  "members": [
+    {
+      "path": "diagnostics/trials/walking_001_20261119_233028_983555/collector_ready.json",
+      "bytes": 72,
+      "sha256": "b768170ee26de93cb003ade6f1097d59483af0c826b7182cb5bda4c07ffce12e"
+    },
+    {
+      "path": "diagnostics/trials/walking_001_20261119_233028_983555/collector_stopped.json",
+      "bytes": 397,
+      "sha256": "e9648151bc048997c8e6ccebe5c0009380db5828f5a806ddf4d4c18a16db37f7"
+    },
+    {
+      "path": "diagnostics/trials/walking_001_20261119_233028_983555/final_verification.json",
+      "bytes": 216,
+      "sha256": "917574c96ac12908162cecd7fdc0b9e7fd26090180ad3d3094b946797a48328d"
+    },
+    {
+      "path": "diagnostics/trials/walking_001_20261119_233028_983555/manifest.json",
+      "bytes": 3865,
+      "sha256": "85d00e07d394ab80c3ad6b78c26d30fb9550166d16009278fa2551e3a098d925"
+    },
+    {
+      "path": "diagnostics/trials/walking_001_20261119_233028_983555/route_note.json",
+      "bytes": 759,
+      "sha256": "8251c06f343448ad58b797ff7e35ee2c2038c37fc77bc744e84cf1be1cdb698a"
+    },
+    {
+      "path": "diagnostics/trials/walking_001_20261119_233028_983555/STOP",
+      "bytes": 18,
+      "sha256": "eb6d6ed5228f3a6503fb36057aeb936b3f6b0dc8f6b00566fb9bb55935bf3d2f"
+    },
+    {
+      "path": "diagnostics/trials/walking_001_20261119_233028_983555/walking_20261119_233028_983555.accepted_times.csv",
+      "bytes": 389463,
+      "sha256": "f787b4c287c88cdcde73b552322d524125804b4ef2a68f72055f005d910b1ab0"
+    },
+    {
+      "path": "diagnostics/trials/walking_001_20261119_233028_983555/walking_20261119_233028_983555.acquisition_sha256.json",
+      "bytes": 970,
+      "sha256": "e479a536957b1c7aab01514ed69d58b20ce144b20f8b8b90b30772ea6b3044a6"
+    },
+    {
+      "path": "diagnostics/trials/walking_001_20261119_233028_983555/walking_20261119_233028_983555.analysis.json",
+      "bytes": 11058,
+      "sha256": "4fd646c8d38ef74d76b7ca3e879bad6be083f9240544bd13c650626aed3edfe7"
+    },
+    {
+      "path": "diagnostics/trials/walking_001_20261119_233028_983555/walking_20261119_233028_983555.collector_stats.json",
+      "bytes": 397,
+      "sha256": "e9648151bc048997c8e6ccebe5c0009380db5828f5a806ddf4d4c18a16db37f7"
+    },
+    {
+      "path": "diagnostics/trials/walking_001_20261119_233028_983555/walking_20261119_233028_983555.collector_terminal.txt",
+      "bytes": 397,
+      "sha256": "71c7952bedc30d05d02911a2e3bb76562be050ef7692402ac28092f2719e1254"
+    },
+    {
+      "path": "diagnostics/trials/walking_001_20261119_233028_983555/walking_20261119_233028_983555.csi.csv",
+      "bytes": 7234311,
+      "sha256": "c4be312ae84e0cdabd9e45eb975fe0c277e161b8b5b4c531489264929354abdf"
+    },
+    {
+      "path": "diagnostics/trials/walking_001_20261119_233028_983555/walking_20261119_233028_983555.log.txt",
+      "bytes": 726088,
+      "sha256": "8fc2a561957c2c4569666a3ff3607c04b9277e0492f85fd66b84ca8e4fab6820"
+    },
+    {
+      "path": "diagnostics/trials/walking_001_20261119_233028_983555/walking_20261119_233028_983555.phase_events.jsonl",
+      "bytes": 5864,
+      "sha256": "ef3db238d13eb8b0b40647a84fbcea06666fd409f2772a7bca80289a2775ae91"
+    },
+    {
+      "path": "diagnostics/trials/walking_001_20261119_233028_983555/walking_20261119_233028_983555.phase_times.csv",
+      "bytes": 538,
+      "sha256": "09d629dd7fecb56e4878679d6a2ee6b00f1a002ff826e2c2f66d6c438f33ee85"
+    },
+    {
+      "path": "diagnostics/trials/walking_001_20261119_233028_983555/walking_20261119_233028_983555.quality.csv",
+      "bytes": 388,
+      "sha256": "1b0cf2efe5fc99494d6959a66ac99d5b7dc6daebe1443cefbe7c69089a13e7fd"
+    },
+    {
+      "path": "diagnostics/trials/walking_001_20261119_233028_983555/walking_20261119_233028_983555.raw",
+      "bytes": 7960246,
+      "sha256": "b50363d9fe5e6e3acb496bcd9e698bf1729dfd0bc82a83e5c9e170bbf81eec82"
+    },
+    {
+      "path": "diagnostics/trials/walking_001_20261119_233028_983555/walking_20261119_233028_983555.read_times.csv",
+      "bytes": 910666,
+      "sha256": "3f22f95a2ae4f011fc3d1579db34416d294b12210c8a01cb891c62485f3a2297"
+    },
+    {
+      "path": "diagnostics/trials/walking_001_20261119_233028_983555/walking_20261119_233028_983555.records_timed.csv",
+      "bytes": 7919617,
+      "sha256": "9d32b4612fee579a934b924f822f01d9e93fd742d22cb916f3c8bbb022092e24"
+    },
+    {
+      "path": "diagnostics/trials/walking_001_20261119_233028_983555/walking_20261119_233028_983555.report.md",
+      "bytes": 4222,
+      "sha256": "be3795baadd170a20f39f080d684d2bed8c80f07aa59fd2645626be3d3b85979"
+    },
+    {
+      "path": "diagnostics/trials/walking_001_20261119_233028_983555/walking_20261119_233028_983555.speech.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "diagnostics/trials/walking_001_20261119_233028_983555/walking_20261119_233028_983555.variability.csv",
+      "bytes": 7859,
+      "sha256": "5daaf8baef7a7567b27b5c69d3cde3e5c39b4eba9fe9dcc256ad90d246c916af"
+    },
+    {
+      "path": "diagnostics/trials/walking_001_20261119_233028_983555/walking_20261119_233028_983555.variability.png",
+      "bytes": 248697,
+      "sha256": "3e7429a55a920252382efef088b9bd758f8c5a69fc872108a457bbfd175d631a"
+    },
+    {
+      "path": "diagnostics/trials/walking_001_20261119_233028_983555/walking_20261119_233028_983555.variability.svg",
+      "bytes": 128195,
+      "sha256": "3df0545d5a5c374dcadc9917d23ad468829f5906911fbac30995b1b183feedef"
+    }
+  ]
+}

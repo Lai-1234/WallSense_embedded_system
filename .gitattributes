@@ -1,0 +1,6 @@
+# Preserve the verified collector/TX snapshots and dataset archives byte-for-byte.
+*.zip -text
+esp-csi/examples/get-started/tools/csi_data_read_parse.py -text whitespace=cr-at-eol,-blank-at-eof
+esp-csi/examples/get-started/csi_send/main/app_main.c -text whitespace=cr-at-eol,-blank-at-eof
+# Patch context deliberately contains single-space blank lines.
+patches/*.patch -text -whitespace

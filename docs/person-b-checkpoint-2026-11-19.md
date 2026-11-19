@@ -65,3 +65,66 @@ The local TX antenna changes in
 `examples/get-started/csi_send/main/app_main.c` remain in that checkout and are
 not included in this documentation commit. Preserve those source changes and
 any staged work when resuming.
+
+## Shutdown checkpoint after walking trial 001 — 2026-11-19
+
+The verified collector fix and stationary retest had existed only locally before
+this backup. This checkpoint preserves the fixed collector, TX antenna source,
+their upstream patch, diagnostics utilities, reports and archived evidence.
+The Espressif checkout remains separate and its existing changes are retained.
+
+Trial prefix: `walking_20261119_233028_983555`.
+Dataset: `datasets/walking_trial_001/walking_20261119_233028_983555.zip`.
+Its inventory and `backup_audit.json` account for all 24 original trial files;
+archive members retain original filenames, relative paths and bytes.
+
+The actual route was **one-sided approach and retreat**, because the computer
+prevented a complete crossing between the boards. The user moved away, approached
+the line near the two boards, then turned back. The planned crossing route remains
+in the original manifest, while its actual-route fields and `route_note.json`
+record the correction. The boards were fixed, no metal object was directly
+between them, and a nearby table's metal corner stayed fixed. Board spacing,
+height and walking distance were not measured.
+
+The continuous capture contains **9,763 valid C6 CSV records** including preparation
+and capture tails. All four measured protocol intervals had zero format errors.
+CSV rows and complete valid raw records match exactly. The 10-second return/settle
+interval is labelled transition and excluded from the three-phase comparison.
+
+| Phase | Valid records | Records/s | Missing sequence IDs within valid records | Variability |
+|---|---:|---:|---:|---:|
+| Stationary before | 2,513 | 83.73 | 215 | 24.9779% |
+| Walking | 2,724 | 90.72 | 7 | 17.9048% |
+| Return/settle transition | 911 | 90.84 | 0 | Excluded |
+| Stationary after | 2,725 | 90.80 | 1 | 15.4048% |
+
+Variability uses the same preselected 80 complex-array indices, non-overlapping
+one-second windows, temporal amplitude CV per index, median across indices,
+then median across the 30 complete windows in each measured phase. No detection
+threshold was fitted. Walking was not higher than both stationary phases, so the
+walking response was **inconclusive**, even though variability fell afterward.
+Sequence gaps do not independently establish Wi-Fi packet loss.
+
+**Next step: offline analysis of the two stationary baselines.** Compare the
+already saved raw/timed records, RSSI distributions, AGC/FFT gains and early/late
+windows. The stationary RSSI medians differed substantially (-82 versus -68 dBm),
+and gain states changed. Establish why the two stationary baselines differ before
+using this result to choose activity scoring or planning another physical trial.
+Do not tune a threshold on this single exploratory trial.
+
+The successful stationary retest is preserved in
+`diagnostics/20261119_225130_863855_repeat_results.md` and its JSON, with the complete
+underlying diagnostic evidence in `datasets/stationary_retest/diagnostics-2026-11-19.zip`.
+That repeat reproduced one 256/352 array-length mismatch and a roughly 2.10 MB
+backlog in the old collector, while the fixed collector recorded 2,739 valid
+records in 30.234 seconds with no format errors or sequence gaps. The specific
+driver-overflow mechanism remains an inference; raw/CSV records and old failures
+are retained for review.
+
+A stale VS Code TX buffer conflicted with the newer disk version. Both source
+versions were saved in the diagnostic archive before resolving the editor state;
+the disk version includes the antenna block and is the canonical backup.
+
+This backup task performs no hardware experiment, firmware build, flashing,
+frequency/antenna change or threshold fitting. Collector shutdown status and an
+exclusive COM7 handle check confirmed release without reading serial data.

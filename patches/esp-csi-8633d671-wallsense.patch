@@ -1,0 +1,253 @@
+diff --git a/examples/get-started/csi_send/main/app_main.c b/examples/get-started/csi_send/main/app_main.c
+index e26ee5b..03c1cfd 100644
+--- a/examples/get-started/csi_send/main/app_main.c
++++ b/examples/get-started/csi_send/main/app_main.c
+@@ -24,6 +24,10 @@
+ #include "esp_netif.h"
+ #include "esp_now.h"
+ 
++#include "driver/gpio.h"
++#include "freertos/FreeRTOS.h"
++#include "freertos/task.h"
++
+ #define CONFIG_LESS_INTERFERENCE_CHANNEL   11
+ 
+ #if CONFIG_IDF_TARGET_ESP32C5 || CONFIG_IDF_TARGET_ESP32C61 || (CONFIG_IDF_TARGET_ESP32C6 && ESP_IDF_VERSION >= ESP_IDF_VERSION_VAL(5, 4, 0))
+@@ -128,6 +132,18 @@ static void wifi_esp_now_init(esp_now_peer_info_t peer)
+ 
+ void app_main()
+ {
++    // Enable RF switch on XIAO ESP32-C6
++    ESP_ERROR_CHECK(gpio_set_direction(GPIO_NUM_3, GPIO_MODE_OUTPUT));
++    ESP_ERROR_CHECK(gpio_set_level(GPIO_NUM_3, 0));
++
++    vTaskDelay(pdMS_TO_TICKS(100));
++
++    // Select the built-in ceramic antenna
++    ESP_ERROR_CHECK(gpio_set_direction(GPIO_NUM_14, GPIO_MODE_OUTPUT));
++    ESP_ERROR_CHECK(gpio_set_level(GPIO_NUM_14, 0));
++
++    ESP_LOGI("ANTENNA", "XIAO internal antenna selected");
++
+     /**
+      * @brief Initialize NVS
+      */
+diff --git a/examples/get-started/tools/csi_data_read_parse.py b/examples/get-started/tools/csi_data_read_parse.py
+index 1ba10e7..e0aceaf 100755
+--- a/examples/get-started/tools/csi_data_read_parse.py
++++ b/examples/get-started/tools/csi_data_read_parse.py
+@@ -29,6 +29,7 @@ from pyqtgraph import ScatterPlotItem
+ from PyQt5.QtCore import pyqtSignal, QThread
+ import threading
+ import time
++import traceback
+ from scipy.optimize import minimize
+ import matplotlib.pyplot as plt
+ from scipy.stats import linregress
+@@ -131,6 +132,14 @@ class csi_data_graphical_window(QWidget):
+         self.timer.timeout.connect(self.update_data)
+         self.timer.start(100)
+         self.deta_len = 0
++        self.reader = None
++
++    def closeEvent(self, event):
++        self.timer.stop()
++        if self.reader is not None:
++            self.reader.stop()
++            self.reader.wait()
++        super().closeEvent(event)
+ 
+     def update_curve_colors(self, color_list):
+         self.deta_len = len(color_list)
+@@ -187,20 +196,61 @@ def generate_subcarrier_colors(red_range, green_range, yellow_range, total_num,i
+     return colors
+ 
+ 
+-def csi_data_read_parse(port: str, csv_writer, log_file_fd,callback=None):
++def serial_lines(serial_port, stop_event):
++    """Drain serial in chunks; retain incomplete lines across reads.
++
++    On Windows, Serial.readline() reads one byte at a time. Thousands of
++    serial API calls per record compete with Qt drawing and let RX back up.
++    A timeout bounds shutdown without treating a timeout as an end of line.
++    """
++    pending = bytearray()
++    while not stop_event.is_set():
++        chunk = serial_port.read(min(max(serial_port.in_waiting, 1), 65536))
++        if not chunk:
++            continue
++        pending.extend(chunk)
++        while True:
++            end = pending.find(b'\n')
++            if end < 0:
++                break
++            yield bytes(pending[:end + 1])
++            del pending[:end + 1]
++    # A partial final line is a capture boundary, not a complete CSI record.
++    if pending:
++        yield bytes(pending)
++
++
++def csi_data_read_parse(port: str, csv_writer, log_file_fd, callback=None, stop_event=None):
+     global fft_gains, agc_gains
+-    set = serial.Serial(port=port, baudrate=921600,bytesize=8, parity='N', stopbits=1)
+-    count =0
+-    if set.isOpen():
++    if stop_event is None:
++        stop_event = threading.Event()
++    serial_port = serial.Serial(port=port, baudrate=921600, bytesize=8,
++                                parity='N', stopbits=1, timeout=0.1)
++    if serial_port.isOpen():
+         print('open success')
+     else:
+         print('open failed')
+         return
+-    while True:
+-        strings = str(set.readline())
+-        if not strings:
+-            break
+-        strings = strings.lstrip('b\'').rstrip('\\r\\n\'')
++    try:
++        _parse_serial_lines(serial_lines(serial_port, stop_event), csv_writer,
++                            log_file_fd, callback)
++    finally:
++        serial_port.close()
++
++
++def _parse_serial_lines(lines, csv_writer, log_file_fd, callback=None):
++    count = 0
++    for raw_line in lines:
++        if not raw_line.endswith(b'\n'):
++            log_file_fd.write('partial line at capture boundary\n' + repr(raw_line) + '\n')
++            log_file_fd.flush()
++            continue
++        try:
++            strings = raw_line.decode('utf-8').rstrip('\r\n')
++        except UnicodeDecodeError:
++            log_file_fd.write('invalid UTF-8 serial line\n' + repr(raw_line) + '\n')
++            log_file_fd.flush()
++            continue
+         index = strings.find('CSI_DATA')
+ 
+         if index == -1:
+@@ -208,9 +258,13 @@ def csi_data_read_parse(port: str, csv_writer, log_file_fd,callback=None):
+             log_file_fd.flush()
+             continue
+ 
+-        csv_reader = csv.reader(StringIO(strings))
+-        csi_data = next(csv_reader)
+-        csi_data_len = int (csi_data[-3])
++        try:
++            csi_data = next(csv.reader(StringIO(strings), strict=True))
++        except csv.Error:
++            log_file_fd.write('invalid CSV record\n' + strings + '\n')
++            log_file_fd.flush()
++            print('invalid CSV record')
++            continue
+         if len(csi_data) != len(DATA_COLUMNS_NAMES) and len(csi_data) != len(DATA_COLUMNS_NAMES_C5C6):
+             print('element number is not equal',len(csi_data),len(DATA_COLUMNS_NAMES) )
+             # print(csi_data)
+@@ -219,6 +273,20 @@ def csi_data_read_parse(port: str, csv_writer, log_file_fd,callback=None):
+             log_file_fd.flush()
+             continue
+ 
++        try:
++            if csi_data[0] != 'CSI_DATA':
++                raise ValueError('CSI prefix is not at the start of the record')
++            csi_data_len = int(csi_data[-3])
++            fft_gain = int(csi_data[6])
++            agc_gain = int(csi_data[7])
++            if csi_data_len <= 0 or csi_data_len % 2 or csi_data_len > CSI_DATA_COLUMNS * 2:
++                raise ValueError('unsupported I/Q array length')
++        except ValueError as exc:
++            print('invalid CSI metadata:', exc)
++            log_file_fd.write('invalid CSI metadata: ' + str(exc) + '\n' + strings + '\n')
++            log_file_fd.flush()
++            continue
++
+         try:
+             csi_raw_data = json.loads(csi_data[-1])
+         except json.JSONDecodeError:
+@@ -227,6 +295,11 @@ def csi_data_read_parse(port: str, csv_writer, log_file_fd,callback=None):
+             log_file_fd.write(strings + '\n')
+             log_file_fd.flush()
+             continue
++        if not isinstance(csi_raw_data, list) or any(type(value) is not int for value in csi_raw_data):
++            print('invalid CSI array values')
++            log_file_fd.write('invalid CSI array values\n' + strings + '\n')
++            log_file_fd.flush()
++            continue
+         if csi_data_len != len(csi_raw_data):
+             print('csi_data_len is not equal',csi_data_len,len(csi_raw_data))
+             log_file_fd.write('csi_data_len is not equal\n')
+@@ -234,12 +307,12 @@ def csi_data_read_parse(port: str, csv_writer, log_file_fd,callback=None):
+             log_file_fd.flush()
+             continue
+ 
+-        fft_gain = int(csi_data[6])
+-        agc_gain = int(csi_data[7])
+-
+         fft_gains.append(fft_gain)
+         agc_gains.append(agc_gain)
+ 
++        if count == 0:
++            columns = DATA_COLUMNS_NAMES_C5C6 if len(csi_data) == 15 else DATA_COLUMNS_NAMES
++            csv_writer.writerow(columns)
+         csv_writer.writerow(csi_data)
+ 
+         # Rotate data to the left
+@@ -277,12 +350,12 @@ def csi_data_read_parse(port: str, csv_writer, log_file_fd,callback=None):
+             elif csi_data_len > 0 and csi_data_len <= 612:
+                 raw_len = len(csi_raw_data)
+                 colors = generate_subcarrier_colors((0,raw_len//2), (raw_len//2+1,raw_len-1), None, raw_len)
+-            callback(colors)
++            if callback is not None:
++                callback(colors)
+ 
+         for i in range(csi_data_len // 2):
+             csi_data_complex[-1][i] = complex(csi_raw_data[i * 2 + 1],
+                                             csi_raw_data[i * 2])
+-    set.close()
+     return
+ 
+ 
+@@ -291,18 +364,21 @@ class SubThread (QThread):
+     def __init__(self, serial_port, save_file_name, log_file_name):
+         super().__init__()
+         self.serial_port = serial_port
+-
+-        save_file_fd = open(save_file_name, 'w')
+-        self.log_file_fd = open(log_file_name, 'w')
+-        self.csv_writer = csv.writer(save_file_fd)
+-        self.csv_writer.writerow(DATA_COLUMNS_NAMES)
++        self.save_file_name = save_file_name
++        self.log_file_name = log_file_name
++        self.stop_event = threading.Event()
+ 
+     def run(self):
+-        csi_data_read_parse(self.serial_port, self.csv_writer, self.log_file_fd,callback=self.data_ready.emit)
++        try:
++            with open(self.save_file_name, 'w', newline='', encoding='utf-8') as save_file_fd, \
++                    open(self.log_file_name, 'w', encoding='utf-8') as log_file_fd:
++                csi_data_read_parse(self.serial_port, csv.writer(save_file_fd), log_file_fd,
++                                    callback=self.data_ready.emit, stop_event=self.stop_event)
++        except Exception:
++            traceback.print_exc()
+ 
+-    def __del__(self):
+-        self.wait()
+-        self.log_file_fd.close()
++    def stop(self):
++        self.stop_event.set()
+ 
+ 
+ if __name__ == '__main__':
+@@ -329,6 +405,8 @@ if __name__ == '__main__':
+     subthread = SubThread(serial_port, file_name, log_file_name)
+ 
+     window = csi_data_graphical_window()
++    window.reader = subthread
++    app.aboutToQuit.connect(subthread.stop)
+     subthread.data_ready.connect(window.update_curve_colors)
+     subthread.start()
+     window.show()

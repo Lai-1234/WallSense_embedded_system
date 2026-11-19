@@ -1,0 +1,22 @@
+{
+  "trial_prefix": "walking_20261119_233028_983555",
+  "manifest_checked": true,
+  "missing_files": [],
+  "local_trial_file_count": 24,
+  "csv_records": 9763,
+  "measured_phase_format_errors": 0,
+  "manifest_collector_sha_matches": true,
+  "com7_status": "exclusive_handle_opened_and_closed_without_IO",
+  "trial_archive": "datasets/walking_trial_001/walking_20261119_233028_983555.zip",
+  "trial_archive_sha256": "81da319cd83f482b55694b64212afa22ccf902493aaba0be9371aa1ba9d89b6e",
+  "raw_member": "diagnostics/trials/walking_001_20261119_233028_983555/walking_20261119_233028_983555.raw",
+  "raw_sha256": "b50363d9fe5e6e3acb496bcd9e698bf1729dfd0bc82a83e5c9e170bbf81eec82",
+  "csv_member": "diagnostics/trials/walking_001_20261119_233028_983555/walking_20261119_233028_983555.csi.csv",
+  "csv_sha256": "c4be312ae84e0cdabd9e45eb975fe0c277e161b8b5b4c531489264929354abdf",
+  "stationary_archive": "datasets/stationary_retest/diagnostics-2026-11-19.zip",
+  "source_files": {
+    "esp-csi/examples/get-started/tools/csi_data_read_parse.py": "9456a557c499b47787cf6b2078fd3e7437cab568c9b031c2c3efd32bebe20b69",
+    "esp-csi/examples/get-started/csi_send/main/app_main.c": "7355e54fce0577ccd033755eb02e6b262af1db3f5e11c6d1e89b48364a2dcf0f"
+  },
+  "upstream_base": "8633d67152db2808f141cc1595970aa9cf406045"
+}

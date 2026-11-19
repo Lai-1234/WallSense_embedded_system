@@ -1,0 +1,228 @@
+{
+  "user_clarification": "User moved between boards and occluded devices during the preceding session.",
+  "conditions": "Requested stationary boards and no movement/occlusion for this repeat; physical compliance not independently observed.",
+  "results": [
+    {
+      "label": "repeat_raw_COM7",
+      "metadata": {
+        "port": "COM7",
+        "baud": 921600,
+        "duration": 30.000284899957478,
+        "bytes": 2362047,
+        "max_pending": 75,
+        "dtr": true,
+        "rts": true
+      },
+      "analysis": {
+        "file": "C:\\Users\\laisi\\embedded_system\\diagnostics\\20261119_224805_354045_repeat_raw_COM7.raw",
+        "bytes": 2362047,
+        "sha256": "b1c600a5b4cde960e9ab7b07e95653a176d56b0e26fc5c8802b4953cb1e5f6f8",
+        "duration": 30.000284899957478,
+        "counts": {
+          "valid": 2726
+        },
+        "valid_lengths": {
+          "256": 2726
+        },
+        "non_csi": {
+          "gain_log": 2725
+        },
+        "csi_bytes": 2160322,
+        "valid_per_second": 90.8658037445459,
+        "malformed_patterns": {},
+        "sequence": {
+          "gap_events": 1,
+          "absent_sequence_ids": 1,
+          "largest_gaps": [
+            [
+              219958,
+              219960,
+              1
+            ]
+          ],
+          "backwards_or_reset": [],
+          "duplicates": 0
+        },
+        "excluded_first_line_bytes": 72,
+        "excluded_final_fragment_bytes": 1,
+        "first_excerpt": "b'I (864524) csi_recv: compensate_gain 0.944061, agc_gain 47, fft_gain 20\\r'",
+        "final_excerpt": "b'I'",
+        "examples": {}
+      },
+      "csv": null,
+      "terminal_traceback": false,
+      "rssi_min": -63,
+      "rssi_median": -62.0,
+      "rssi_max": -61,
+      "rx_first_timestamp": 864237992,
+      "rx_last_timestamp": 894224278,
+      "rx_timestamp_span_seconds": 29.986286
+    },
+    {
+      "label": "repeat_original",
+      "metadata": {
+        "serial_bytes": 26835,
+        "serial_lines": 62,
+        "max_pending": 2099000,
+        "max_readline_gap": 2.073362700000871,
+        "plot_updates": 93,
+        "plot_exceptions": 0,
+        "phase_changed_updates": 17,
+        "phase_points": 490,
+        "iq_points": 256,
+        "duration": 30.4165856000036,
+        "requested_seconds": 30.0,
+        "interval": 100,
+        "no_draw": false,
+        "serial_open_after_window_close": true,
+        "thread_running_after_window_close": true,
+        "output_prefix": "C:\\Users\\laisi\\embedded_system\\diagnostics\\20261119_224849_999446_repeat_original"
+      },
+      "analysis": {
+        "file": "C:\\Users\\laisi\\embedded_system\\diagnostics\\20261119_224849_999446_repeat_original.raw",
+        "bytes": 26835,
+        "sha256": "ef98ccf0daa51f61122aed627f4b06575f168f657e1027340cc200aff9d491cf",
+        "duration": 30.4165856000036,
+        "counts": {
+          "valid": 29,
+          "array_length": 1
+        },
+        "valid_lengths": {
+          "256": 29
+        },
+        "non_csi": {
+          "gain_log": 31
+        },
+        "csi_bytes": 23802,
+        "valid_per_second": 0.9534271986135278,
+        "malformed_patterns": {},
+        "sequence": {
+          "gap_events": 1,
+          "absent_sequence_ids": 2419,
+          "largest_gaps": [
+            [
+              227176,
+              229596,
+              2419
+            ]
+          ],
+          "backwards_or_reset": [],
+          "duplicates": 0
+        },
+        "excluded_first_line_bytes": 739,
+        "excluded_final_fragment_bytes": 0,
+        "first_excerpt": "b'46210770,47,2,256,0,\"[0,0,0,0,0,0,0,0,0,0,0,0,-3,3,-2,2,-3,3,-2,2,-5,2,-3,3,-2,3,-3,4,-3,2,-5,1,-6,0'",
+        "final_excerpt": "b''",
+        "examples": {
+          "array_length": [
+            {
+              "detail": "declared=256, actual=352",
+              "raw": "CSI_DATA,227177,1a:00:00:00:00:00,-62,11,-98,15,48,11,946518773,47,2,256,0,\"[0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,4,0,2,0,5,-1,4,-2,5,-1,5,-3,4,-2,5,-2,4,-2,5,-4,7,-3,4,-4,6,-8,7,-1,5,-6,7,-5,4,-7,7,-8,6,-6,6,-8,6,-7,2,-8,4,-9,5,-8,4,-7,3,-11,3,-5,5,-9,8,-9,4,-12,5,-10,2,-9,3,-12,3,-10,2,-9,4,-8,5,-10,4,-9,3,-11,5,-7,6,-12,9,-9,4,-15,8,-10,1,-11,5,-15,1,-11,5,-12,6,-14,7,-12,8,-14,6,-12,5,-15,9,-21,9,-15,5,0,0,0,0,0,0,6,19,4,14,5,22,4,17,2,11,4,20,3,11,5,20,4,15,2,20,1,17,0,17,2,18,-1,14,2,16,1,19,2,16,1,15,0,22,3,12,3,19,1,16,1,21,0,19,-1,17,0,20,-2,15,1,18,0,20,-2,17,0,17,-4,21,2,13,0,22,-3,16,-5,24,-6,17,-6,16,-8,17,-6,165,3,-15,4,-19,3,-17,2,-14,0,-18,0,0,0,0,0,0,-18,0,-24,0,-12,0,-19,2,-24,2,-15,1,-21,2,-13,2,-22,4,-17,3,-16,4,-17,8,-17,5,-19,7,-14,6,-16,4,-17,7,-16,9,-10,7,-18,11,-12,8,-14,12,-10,7,-11,11,-15,13,-12,13,-15,17,-12,11,-13,12,-12,15,-13,15,-6,12,-15,18,-9,12,-8,15,-8,9,-9,17,-10,13,-6,16,-9,16,-11,16,-8,12,-11,12,-10,14,-7,13,-9,14,-7,8,-6,14,-4,7,-6,13,-7,9,-6,11,-8,9,-8,11,-8,8,-9,5,-6,5,0,0,0,0,0,0,0,0,0,0]\""
+            }
+          ]
+        }
+      },
+      "csv": {
+        "header_fields": 25,
+        "data_rows": 29,
+        "invalid": 0,
+        "blank_rows": 30,
+        "field_counts": [
+          15
+        ],
+        "array_lengths": [
+          256
+        ]
+      },
+      "terminal_traceback": false,
+      "rssi_min": -63,
+      "rssi_median": -62,
+      "rssi_max": -62,
+      "rx_first_timestamp": 946221770,
+      "rx_last_timestamp": 973139022,
+      "rx_timestamp_span_seconds": 26.917252
+    },
+    {
+      "label": "repeat_fixed",
+      "metadata": {
+        "serial_bytes": 2380769,
+        "serial_lines": 5480,
+        "max_pending": 11336,
+        "max_readline_gap": 0.13164289999986067,
+        "plot_updates": 109,
+        "plot_exceptions": 0,
+        "phase_changed_updates": 108,
+        "phase_points": 490,
+        "iq_points": 256,
+        "duration": 30.233986000006553,
+        "requested_seconds": 30.0,
+        "interval": 100,
+        "no_draw": false,
+        "serial_open_after_window_close": false,
+        "thread_running_after_window_close": false,
+        "output_prefix": "C:\\Users\\laisi\\embedded_system\\diagnostics\\20261119_225032_778748_repeat_fixed"
+      },
+      "analysis": {
+        "file": "C:\\Users\\laisi\\embedded_system\\diagnostics\\20261119_225032_778748_repeat_fixed.raw",
+        "bytes": 2380769,
+        "sha256": "08423d2665ea48dbcf7d61abc42aef48b35fd0b1ba395b1b818ec6379fb02b27",
+        "duration": 30.233986000006553,
+        "counts": {
+          "valid": 2739
+        },
+        "valid_lengths": {
+          "256": 2739
+        },
+        "non_csi": {
+          "gain_log": 2740
+        },
+        "csi_bytes": 2174390,
+        "valid_per_second": 90.5934136504332,
+        "malformed_patterns": {},
+        "sequence": {
+          "gap_events": 0,
+          "absent_sequence_ids": 0,
+          "largest_gaps": [],
+          "backwards_or_reset": [],
+          "duplicates": 0
+        },
+        "excluded_first_line_bytes": 505,
+        "excluded_final_fragment_bytes": 374,
+        "first_excerpt": "b',5,7,0,9,1,10,2,11,1,12,3,13,5,11,6,13,2,12,4,10,1,14,7,10,5,13,2,9,2,14,1,12,2,15,0,18,2,17,1,13,2,'",
+        "final_excerpt": "b'CSI_DATA,236414,1a:00:00:00:00:00,-62,11,-97,13,48,11,1048126719,47,2,256,0,\"[0,0,0,0,0,0,0,0,0,0,0,'",
+        "examples": {}
+      },
+      "csv": {
+        "header_fields": 15,
+        "data_rows": 2739,
+        "invalid": 0,
+        "blank_rows": 0,
+        "field_counts": [
+          15
+        ],
+        "array_lengths": [
+          256
+        ]
+      },
+      "terminal_traceback": false,
+      "rssi_min": -63,
+      "rssi_median": -62,
+      "rssi_max": -61,
+      "rx_first_timestamp": 1017997439,
+      "rx_last_timestamp": 1048115719,
+      "rx_timestamp_span_seconds": 30.11828
+    }
+  ],
+  "fixed_exact_replay": {
+    "valid_rows": 2726,
+    "header_fields": 15,
+    "errors": {
+      "element number is not equal": 0,
+      "csi_data_len is not equal": 0,
+      "data is incomplete": 0
+    }
+  },
+  "port_reopened_and_closed": true,
+  "source_unchanged": true,
+  "tx_unchanged": true
+}
